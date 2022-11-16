@@ -5,22 +5,24 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ProductsService } from './products.service';
 import { Products } from './products.model';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     SequelizeModule.forRoot({
       dialect: 'mysql',
       host: 'localhost',
       port: 3306,
-      username: 'develop',
-      password: ']QKbDN8PZE2_G)NG',
-      database: 'products',
+      username: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
       autoLoadModels: true,
       synchronize: true,
     }),
     SequelizeModule.forFeature([Products])
   ],
-controllers: [AppController, ProductsController],
+  controllers: [AppController, ProductsController],
   providers: [AppService, ProductsService],
 })
 export class AppModule { }
